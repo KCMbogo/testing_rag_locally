@@ -1,11 +1,12 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
+import ollama
 
 from core.augment import build_prompt
 from core.retrieve import retrieve_chunks
 from tools.classifier import classify_query
 
-def load_llm(model_id: str = "paraphrase-multilingual-MiniLM-L12-v2"):
+def load_llm(model_id: str = "mistralai/Mistral-7B-Instruct-v0.3"):
     """
     Load local LLM and tokenizer.
     device_map='auto' uses GPU if available, falls back to CPU.
