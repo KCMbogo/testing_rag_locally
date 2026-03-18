@@ -6,7 +6,7 @@ from core.augment import build_prompt
 from core.retrieve import retrieve_chunks
 from tools.classifier import classify_query
 
-def load_llm(model_id: str = "mistralai/Mistral-7B-Instruct-v0.3"):
+def load_llm(model_id: str = "microsoft/Phi-3-mini-4k-instruct"):
     """
     Load local LLM and tokenizer.
     device_map='auto' uses GPU if available, falls back to CPU.
@@ -39,7 +39,8 @@ def generate_answer(prompt: str, tokenizer, llm, max_new_tokens: int = 512) -> s
             do_sample=True
         )
 
-    answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    input_length = inputs['input_ids'].shape[1]
+    answer = tokenizer.decode(outputs[0][input_length], skip_special_tokens=True)
     return answer
 
 
