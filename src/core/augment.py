@@ -1,6 +1,6 @@
 def build_prompt(query: str, retrieved_chunks: list) -> str:
     context = "\n\n".join([
-        f"[Source: {r.payload['filename']} | Section: {r.payload['section_title']}]\n{r.payload['chunk_text']}"
+        f"[Source: {r.payload['filename']} | Section: {r.payload['section_titile']}]\n{r.payload['chunk_text']}"
         for r in retrieved_chunks
     ])
 

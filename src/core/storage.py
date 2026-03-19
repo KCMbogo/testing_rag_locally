@@ -4,10 +4,12 @@ from qdrant_client.models import VectorParams, Distance, PointStruct
 def setup_qdrant(collection_name: str, vector_size: int = 384) -> QdrantClient:
     client = QdrantClient(path="qdrant_db")
 
-    client.recreate_collection(
-        collection_name=collection_name,
-        vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE),
-    )
+    existing = [c.name for c in client.get_collections().collections]
+    if collection_name not in existing:
+        client.recreate_collection(
+            collection_name=collection_name,
+            vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE),
+        )
     return client
 
 

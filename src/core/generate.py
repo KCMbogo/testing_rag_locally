@@ -1,7 +1,5 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
-import ollama
-
+from transformers import AutoTokenizer, AutoModelForCausalLM
 from core.augment import build_prompt
 from core.retrieve import retrieve_chunks
 from tools.classifier import classify_query
@@ -39,8 +37,7 @@ def generate_answer(prompt: str, tokenizer, llm, max_new_tokens: int = 512) -> s
             do_sample=True
         )
 
-    input_length = inputs['input_ids'].shape[1]
-    answer = tokenizer.decode(outputs[0][input_length], skip_special_tokens=True)
+    answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return answer
 
 
@@ -50,17 +47,29 @@ def answer_query(query: str, client, collection_name: str,
     Full RAG query pipeline with three-way classification guard.
     """
     # Step 1 - Classify query
-    category = classify_query(query, llm_pipeline)
+    # category = classify_query(query, llm_pipeline)
 
-    if category == 'chitchat':
-        # Let LLM respond naturally, no RAG needed
-        return generate_answer(query, tokenizer, llm)
+    # if category == 'chitchat':
+    #     # Let LLM respond naturally, no RAG needed
+    #     return generate_answer(query, tokenizer, llm)
 
-    elif category == 'out_of_domain':
-        return "I'm only able to help with IT support related questions. Please ask something about software configuration or installation."
+    # elif category == 'out_of_domain':
+    #     return "I'm only able to help with IT support related questions. Please ask something about software configuration or installation."
 
-    else:
-        # Full RAG pipeline
-        retrieved = retrieve_chunks(query, client, collection_name, embedding_model)
-        prompt = build_prompt(query, retrieved)
-        return generate_answer(prompt, tokenizer, llm)
+    # else:
+    #     # Full RAG pipeline
+    #     retrieved = retrieve_chunks(query, client, collection_name, embedding_model)
+    #     print(f"Retrieved: {len(retrieved)} chunks")
+    #     for r in retrieved:
+    #         print(r.payload['chunk_text'][:100])
+    #     prompt = build_prompt(query, retrieved)
+    #     return generate_answer(prompt, tokenizer, llm)
+
+
+    # Full RAG pipeline
+    retrieved = retrieve_chunks(query, client, collection_name, embedding_model)
+    print(f"Retrieved: {len(retrieved)} chunks")
+    for r in retrieved:
+        print(r.payload['chunk_text'][:100])
+    prompt = build_prompt(query, retrieved)
+    return generate_answer(prompt, tokenizer, llm)

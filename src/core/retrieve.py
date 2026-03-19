@@ -5,11 +5,11 @@ def retrieve_chunks(query: str, client, collection_name: str,
     """
     query_embedding = embedding_model.encode(query).tolist()
 
-    results = client.search(
+    results = client.query_points(
         collection_name=collection_name,
-        query_vector=query_embedding,
+        query=query_embedding,
         limit=n_results,
         with_payload=True,
     )
 
-    return results
+    return results.points

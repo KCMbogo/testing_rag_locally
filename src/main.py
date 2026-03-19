@@ -6,8 +6,11 @@ from core.db import qdrant_client
 from index import embedding_model, tokenizer, llm, llm_pipeline
 
 # --- QUERY (runs every time user asks) ---
+import time
 
-query = "What are the core values of TANAPA"
+query = "What is TANAPA and how many parks does it manage"
+
+start_time = time.time()
 response = answer_query(
     query,
     qdrant_client,
@@ -17,4 +20,6 @@ response = answer_query(
     llm,
     llm_pipeline
 )
-print(f"Query: {query}\n\nResponse: {response}")
+end_time = time.time()
+time_taken = end_time - start_time
+print(f"Query: {query}\n\nResponse: {response}\n\n Time taken: {time_taken}")
