@@ -68,6 +68,8 @@ def answer_query(query: str, client, collection_name: str,
 
     # Full RAG pipeline
     retrieved = retrieve_chunks(query, client, collection_name, embedding_model)
+
+    
     print(f"Retrieved: {len(retrieved)} chunks")
     for r in retrieved:
         print(r.payload['chunk_text'][:100])

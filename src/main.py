@@ -8,7 +8,7 @@ from index import embedding_model, tokenizer, llm, llm_pipeline
 # --- QUERY (runs every time user asks) ---
 import time
 
-query = "What is TANAPA and how many parks does it manage"
+query = "Hello, who are you? And tell me abit about Bitcoin."
 
 start_time = time.time()
 response = answer_query(
@@ -22,4 +22,4 @@ response = answer_query(
 )
 end_time = time.time()
 time_taken = end_time - start_time
-print(f"Query: {query}\n\nResponse: {response}\n\n Time taken: {time_taken}")
+print(f"Query: {query}\n\nResponse: {response}\n\n Time taken: {time_taken: .2f}")
